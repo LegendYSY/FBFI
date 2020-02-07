@@ -49,7 +49,7 @@ The complete business structure:
 The set of all fault-tolerance bottlenecks of this structure is saved in bottlenecks.txt
 ```
 
-Here, a *business structure* is composed of a number of lines. Each line is in the form of `[x_1, x_2, ..., x_]-y_j`, indicating that there is a message transmission edge between nodes *x_i* and *y_j* for *1 <= i <= m*; and *x_i* belongs to the last service if *y_j* is *Final_goal*.
+Here, a *business structure* is composed of a number of lines. Each line is in the form of `[x_1, x_2, ..., x_m]-y_j`, indicating that there is a message transmission edge between nodes *x_i* and *y_j* for *1 <= i <= m*; and *x_i* belongs to the last service if *y_j* is *Final_goal*.
 
 
 
