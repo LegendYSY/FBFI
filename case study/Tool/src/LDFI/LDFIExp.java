@@ -19,6 +19,8 @@ public class LDFIExp {
 		Main m = new Main();
 		JWT jwt = new JWT();
 		String auth = jwt.createToken();
+		//System.out.println(auth);
+		m.RestoreFaults(0);
 		Graph g = new Graph();
 		if(m.Execution(auth)){
 			System.out.println("Execution is successful!");
@@ -34,10 +36,11 @@ public class LDFIExp {
 			//System.out.println(satis);
 			int count = 1;
 			int failcase = 0;
+			int testcaseLength = 0;
 			while(satis){
 				//System.out.println("--------------------" + count + "-------------");
 				String result = z.result;
-				result = result.replaceAll("-", "");
+			//	result = result.replaceAll("---", "");
 				//System.out.println("result is " + result);
 				String[] hosts = result.split(",");
 				Set<String> temp = new HashSet<>();
@@ -45,7 +48,9 @@ public class LDFIExp {
 					temp.add(h);
 				}
 				//System.out.println("Fault is " + Fault);
+				m.RestoreFaults(testcaseLength);
 				m.InsertFaults(temp);
+				jwt = new JWT();
 				auth = jwt.createToken();
 				if(m.Execution(auth)){
 					System.out.println("Successful");
@@ -65,8 +70,8 @@ public class LDFIExp {
 	            	failcase ++;
 	            	//bottlenecks = FaultyCases.size();
 				}
-				m.RestoreFaults(temp.size());
-	            while(!(satis = z.Solve(g.N,cnf,FaultyCases,index)) && index < g.N){
+				testcaseLength = temp.size();
+	            while(!(satis = z.SolveLDFI(g,cnf,FaultyCases,index)) && index < g.N){
 	            	index ++ ;
 	            }
 	    		count++;

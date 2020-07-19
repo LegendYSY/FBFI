@@ -85,7 +85,7 @@ public class Z3_Solver {
         
         
 		N = g.N;
-		System.out.println(N);
+	//	System.out.println(N);
 		BoolExpr[] x = new BoolExpr[N];
 		for(int i = 0;i<N;i++){
 			 x[i] = ctx.mkBoolConst("x"+i);  
@@ -102,7 +102,6 @@ public class Z3_Solver {
 				if(h.length() > 0){
 					//OR = ctx.mkOr(OR,x[Integer.parseInt(h) - 1]);
 					OR = ctx.mkOr(OR,x[g.NodesName.indexOf(h) - 2]);
-					System.out.println(g.NodesName.indexOf(h) - 2);
 				}
 			}
 			s.add(OR);
@@ -117,13 +116,12 @@ public class Z3_Solver {
 			s.add(hasTest);
 		}
 		Status response = s.check();  
-		 
         if (response == Status.SATISFIABLE){  
          	final Model model = s.getModel();
          	for(int i = 0;i<N;i++){
-         		if(model.getConstInterp(x[i]).toString().equals("true"))
-         			//result += (i+1)+",";
-         			result += g.NodesName.get(i + 2);
+         		if(model.getConstInterp(x[i]).toString().equals("true")){
+         			result += g.NodesName.get(i + 2) + ",";
+         		}
          	}
          	if(result.length() > 0)
          		result = result.substring(0, result.length() - 1);

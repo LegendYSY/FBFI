@@ -72,7 +72,7 @@ public class Graph {
 			result += "&";
 		}
 		result = result.substring(0,result.length() - 1);
-		System.out.println(result);
+	//	System.out.println(result);
 		return result;
 		
 	}
