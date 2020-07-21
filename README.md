@@ -1,8 +1,6 @@
 # FBFI
 
-FBFI (Fault-tolerance Bottleneck driven Fault Injection) is a fault injection testing approach to the effective and efficient validation of redundant components deployed in a cloud system. It uses the concept of **fault-tolerance bottleneck** to repeatedly generate fault injection configurations. FBFI does not particularly rely on the system’s complete business structure, but requires that the successful execution paths of the system can be tracked and obtained.
-
-
+FBFI (Fault-tolerance Bottleneck driven Fault Injection) is a fault injection testing approach to the effective and efficient validation of redundant components deployed in a cloud system. It uses the concept of **fault-tolerance bottleneck** to repeatedly generate fault injection configurations. FBFI does not particularly rely on the system’s complete business structure, but requires that the successful execution paths of the system can be traced.
 
 ### Usage
 
@@ -12,7 +10,7 @@ We currently provide a command-line utility that implements the main algorithm o
 java -jar FBFI.jar [k]
 ```
 
-where `[k]` is optional, indicating the maximum number of permissible loss faults when calculating fault-tolerance bottlenecks (0 by default).
+where `[k]` is optional, indicating the maximum number of permissible edge disconnection faults when calculating fault-tolerance bottlenecks (zero by default).
 
 To start FBFI, the tester should provide an initial succesful execution path of the system:
 
@@ -49,23 +47,23 @@ The complete business structure:
 The set of all fault-tolerance bottlenecks of this structure is saved in bottlenecks.txt
 ```
 
-Here, a *business structure* is composed of a number of lines. Each line is in the form of `[x_1, x_2, ..., x_m]-y_j`, indicating that there is a message transmission edge between nodes *x_i* and *y_j* for *1 <= i <= m*; and *x_i* belongs to the last service if *y_j* is *Final_goal*.
+Here, a *business structure* is composed of a number of lines. Each line is in the form of `[x_1, x_2, ..., x_m]-y_j`, indicating that there is a connection edge between nodes *x_i* and *y_j* for *1 <= i <= m*; and *x_i* belongs to the last service if *y_j* is *Final_goal*.
 
 
 
 ### Experiment
 
- To reproduce the experimental results reported in the paper, use the following command (FBFI, Random-1x, Random-2x, and Random-4x will be executed in order):
+To reproduce the experimental results reported in the paper, use the following command (FBFI, Random-1x, Random-2x, Random-4x, and the adapted version of LDFI will be executed in order):
 
 ```bash
 java -jar EXP.jar [k] models.txt [index]
 ```
 
-where `models.txt` is the file that contains all subject structures; `[k]` is an optional argument that indicates the maximum number of permissible loss faults (0 by default); and `[index]` is an optional argument that points to a particualr subject structure (if a value is assigned to `index`, then conduct experiment on the *index*-th subject only; otherwise, conduct experiment on all subjects).
+where `models.txt` is the file that contains all subject structures; `[k]` is an optional argument that indicates the maximum number of permissible edge disconnection faults (zero by default); and `[index]` is an optional argument that points to a particualr subject structure (if a value is assigned to `index`, then conduct experiment on the *index*-th subject only; otherwise, conduct experiment on all subjects).
 
 All subject structures can be found in `models.txt`. A sysmetric business structure is represented as `c_1-c_2-...-c_n`, where `c_i` is an integer value that indicates the number of business nodes in the *i*-th service (a total number of *n* services), e.g., *2-3-2-3* (two nodes in the first service, three nodes in the second service, etc.).
 
-In the case of an asysmetric structure,  `[exlcudes] x_a-x_b, ..., x_p-x_q` is appended at the end of the above representation. Here, each `x_a-x_b` indicates a particular message transmission edge between nodes of adjacent services that is excluded in the structure.
+In the case of an asysmetric structure,  `[exlcudes] x_a-x_b, ..., x_p-x_q` is appended at the end of the above representation. Here, each `x_a-x_b` indicates a particular connection edge that will be excluded in the structure.
 
 For each algorithm and each subject structure, we report the following data:
 
@@ -73,10 +71,5 @@ For each algorithm and each subject structure, we report the following data:
 * `explored_edges`: number of covered message transmissions
 * `bottlenecks`: number of identified fault-tolerance bottlenecks
 * `round`: number of fault injection configurations
-* `failcases`: number of failure causing configurations
-* `time`: execution time cost (milliseconds)
-
-For random approaches, we additionaly report:
-
-* `t_max`: the maximum number of faults in a fault injection
-* `total_time`: the total time costs of 30 executions
+* `failcases`: number of failure-causing configurations
+* `time`: execution cost (milliseconds)
